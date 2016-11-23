@@ -15,9 +15,12 @@ namespace CDSRC\CdsrcBepwreset\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use CDSRC\CdsrcBepwreset\Tool\ResetTool;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use CDSRC\CdsrcBepwreset\Utility\LogUtility;
 use CDSRC\CdsrcBepwreset\Utility\SessionUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Hook user authentication to reset password if option is set.
@@ -29,21 +32,29 @@ class UserAuthHook {
     /**
      * Log off and redirect if password reset is required
      * @param array $params
-     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $pObj
+     * @param BackendUserAuthentication $pObj
      */
     public function postUserLookUp($params, $pObj){
-        if($pObj instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication){
+        if($pObj instanceof BackendUserAuthentication){
             if(!empty($pObj->user)){
                 if(intval($pObj->user['tx_cdsrcbepwreset_resetAtNextLogin']) === 1){
                     try{
                         $user = $pObj->user;
-                        $resetTool = GeneralUtility::makeInstance('CDSRC\\CdsrcBepwreset\\Tool\\ResetTool');
+                        /** @var ResetTool $resetTool */
+                        $resetTool = GeneralUtility::makeInstance(ResetTool::class);
                         $fields = $resetTool->updateResetCodeForUser($user['username']);
-                        
+
+                        // Initialize LanguageService if needed
+                        if(!$GLOBALS['LANG']){
+                            $uc = unserialize($user['uc']);
+                            $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+                            $GLOBALS['LANG']->init($uc['lang']);
+                        }
+
                         $pObj->logoff();
                         
                         LogUtility::writeLog('Password change request generated for "%s (%s)"', $user['uid'], $user['username'], $user['uid']);
-                        SessionUtility::setDatasAndRedirect('force', $user['username'], $fields['tx_cdsrcbepwreset_resetHash']);
+                        SessionUtility::setDataAndRedirect('force', $user['username'], $fields['tx_cdsrcbepwreset_resetHash']);
                     }catch(\Exception $e){
                         // Do not log off if reset code could not been updated
                         LogUtility::writeLog('Unable to update password reset code for user "%s (%s)"', $pObj->user['uid'], $pObj->user['username'], $pObj->user['uid']);

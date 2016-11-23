@@ -18,11 +18,20 @@
 			<trans-unit id="labels.reset" xml:space="preserve">
 				<source>Save password</source>
 			</trans-unit>
+			<trans-unit id="labels.reset.process" xml:space="preserve">
+				<source>Saving password ...</source>
+			</trans-unit>
 			<trans-unit id="labels.resetpw" xml:space="preserve">
 				<source>Send reset code</source>
 			</trans-unit>
 			<trans-unit id="labels.switchToReset" xml:space="preserve">
 				<source>Switch to password reset</source>
+			</trans-unit>
+			<trans-unit id="labels.passwordForgotten" xml:space="preserve">
+				<source>Password forgotten?</source>
+			</trans-unit>
+			<trans-unit id="labels.requestPasswordChange" xml:space="preserve">
+				<source>Request a password change</source>
 			</trans-unit>
 			<trans-unit id="ok.sendCode" xml:space="preserve">
 				<source>Reset code sent</source>
@@ -31,25 +40,13 @@
 				<source>A confirmation has been send to your address email. Click on link to finish password reset.</source>
 			</trans-unit>
 			<trans-unit id="ok.resetPassword" xml:space="preserve">
-				<source>Your password is changed</source>
+				<source>Your password has been changed</source>
 			</trans-unit>
 			<trans-unit id="ok.resetPasswordMessage" xml:space="preserve">
 				<source>You can login with your new password.</source>
 			</trans-unit>
-			<trans-unit id="sendResetcode.subject" xml:space="preserve">
-				<source>[###SITENAME###] Password reset request</source>
-			</trans-unit>
-			<trans-unit id="sendResetcode.message" xml:space="preserve">
-				<source>Hi,
-
-Password reset has been requested for user "###USERNAME###".
-Please click on this link if you did this request (valid until ###VALIDITY###).
-###LINK###
-
-If you did not send this request, please ignore this email.
-
-Kind regards
-                                </source>
+			<trans-unit id="requestNewPassword.subject" xml:space="preserve">
+				<source>[%s] Password reset request</source>
 			</trans-unit>
 			<trans-unit id="warning.resetPassword" xml:space="preserve">
 				<source>An error happend during reset processing</source>
@@ -74,6 +71,9 @@ Kind regards
 			</trans-unit>
 			<trans-unit id="warning.resetPassword.emptyPassword" xml:space="preserve">
 				<source>Password is empty.</source>
+			</trans-unit>
+			<trans-unit id="warning.resetPassword.invalidPasswordConfirmation" xml:space="preserve">
+				<source>The password confirmation is not equals to given password.</source>
 			</trans-unit>
 			<trans-unit id="warning.resetPassword.beSecurePw" xml:space="preserve">
 				<source>Attempt to modify password. Some password conventions were ignored.</source>

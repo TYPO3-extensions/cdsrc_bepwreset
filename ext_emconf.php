@@ -10,11 +10,11 @@
  * writing. "version" and "dependencies" must not be touched!
  * ************************************************************* */
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'BE User Password Reset',
     'description' => 'Allow backend user to reset his password from login form. Option can be specified to force Backend user to change his password at first login.',
     'category' => 'Backend',
-    'version' => '1.0.0',
+    'version' => '2.0.0',
     'state' => 'stable',
     'uploadfolder' => false,
     'createDirs' => '',
@@ -22,18 +22,12 @@ $EM_CONF[$_EXTKEY] = array(
     'author' => 'Matthias Toscanelli',
     'author_email' => 'm.toscanelli@code-source.ch',
     'author_company' => 'Code-Source',
-    'constraints' =>
-    array(
-        'depends' =>
-        array(
-            'typo3' => '6.2.0-6.2.99'
-        ),
-        'conflicts' =>
-        array(
-        ),
-        'suggests' =>
-        array(
-        ),
-    ),
-);
+    'constraints' => [
+        'depends' => [
+            'typo3' => '7.6.0-8.4.99',
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];
 

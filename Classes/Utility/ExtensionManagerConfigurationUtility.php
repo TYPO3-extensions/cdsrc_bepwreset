@@ -66,8 +66,8 @@ class ExtensionManagerConfigurationUtility {
         $content .= '</select>';
         $content .= '<input id="'.$id.'_input" type="hidden" value="'.implode(',', array_unique($selectedGroups)).'" name="'.$params['fieldName'].'" />';
         $content .= $this->loadJavascriptFunction();
-        $content .= '<script type="text/javascript">
-            CDSRC_CdsrcBepwreset.addEvent(\''.$id.'\', \'change\', CDSRC_CdsrcBepwreset.setSelectValue);
+        $content .= '<script>
+            CDSRC_CdsrcBepwreset.initializeSelect(\''.$id.'\');
         </script>';
         return $content;
     }
@@ -80,37 +80,34 @@ class ExtensionManagerConfigurationUtility {
     protected function loadJavascriptFunction(){
         if(!self::$javascriptFunctionInserted){
             self::$javascriptFunctionInserted = TRUE;
-            return '<script type="text/javascript">
+            return '<script>
                 CDSRC_CdsrcBepwreset = {
-                    events: [],
-                    start: function(){
-                        for(var i=0; i<this.events.length; i++){
-                            if(this.events[i].element){
-                               this.events[i].element.on(this.events[i].action, this.events[i].callback);
-                            }
-                        }
-                    },
-                    addEvent: function(id, action, callback){
-                        this.events.push({
-                            element: Ext.get(id),
-                            action: action,
-                            callback: callback
-                        });
-                    },
-                    setSelectValue: function(){
-                        var input = Ext.get(this.dom.id + \'_input\');
-                        if(input){
-                            var values = [];
-                            for(i=0; i<this.dom.options.length; i++){
-                                if (this.dom.options[i].selected){
-                                    values.push(this.dom.options[i].value);
+                    initializeSelect: function(id){
+                        var i,
+                            values,
+                            select = document.getElementById(id),
+                            input = document.getElementById(id + \'_input\');
+                        if(select && input){
+                            values = (input.value || \'\').split(\',\');
+                            if(select.options){
+                                for(i=0; i<select.options.length; i++){
+                                    if(values.indexOf(select.options[i].value) >= 0){
+                                        select.options[i].selected = true;
+                                    }
                                 }
                             }
-                            input.dom.value = values.join();
+                            select.addEventListener(\'change\', function(){
+                                values = [];
+                                for(i=0; i<select.options.length; i++){
+                                    if(select.options[i].selected){
+                                        values.push(select.options[i].value);
+                                    }
+                                }
+                                input.value = values.join(\',\');
+                            });
                         }
                     }
                 };
-                Ext.onReady(CDSRC_CdsrcBepwreset.start, CDSRC_CdsrcBepwreset);
             </script>';
         }
         return '';
