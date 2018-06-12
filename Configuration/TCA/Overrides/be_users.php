@@ -28,5 +28,5 @@ $newBeUsersColumns = array(
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('be_users', $newBeUsersColumns);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('be_users', 'tx_cdsrcbepwreset_resetAtNextLogin');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('be_users', 'tx_cdsrcbepwreset_resetAtNextLogin', '', 'after:password');
 
